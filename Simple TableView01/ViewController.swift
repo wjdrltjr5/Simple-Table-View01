@@ -18,7 +18,8 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         // Delegate 객체와 ViewController의 연결
         myTableView.dataSource = self
         myTableView.delegate = self
-        
+        // navigationBar 에 title 설정
+        self.title = "동물농장"
     }
     //UITableViewDataSource Delegate 메소드
     public func tableView(_ tableView: UITableView, numberOfRowsInSection
@@ -61,5 +62,28 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 100.0
     }
+    //배열에 있는 데이터를 DetailViewController에 넘겨주기
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "godetail"{
+            let dvController = segue.destination as! DetailViewController
+            dvController.dataLabel = animals[2]
+            dvController.dataImage = animals[2]
+        }else if segue.identifier == "gocell"{
+            let dcController = segue.destination as! DetailCelViewController
+            let myIndexPath = myTableView.indexPathForSelectedRow
+            let mtRow = myIndexPath?.row
+            dcController.cellData = animals[mtRow!]
+            dcController.cellImage = animals[mtRow!]
+        }else if segue.identifier == "godetailcell"{
+            let dtController = segue.destination as! myTableViewController
+            let myIndexPath = myTableView.indexPathForSelectedRow
+            let myRow = myIndexPath?.row
+            dtController.detailAnimals = animals[myRow!]
+            dtController.detailYear = year[myRow!]
+        }else{
+            fatalError()
+        }
+   }
+
 }
 
